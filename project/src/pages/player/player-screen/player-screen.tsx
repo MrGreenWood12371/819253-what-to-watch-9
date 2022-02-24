@@ -1,9 +1,18 @@
-function PlayerScreen() {
+import { useNavigate } from 'react-router-dom';
+import { Film } from '../../../types/films';
+
+type PlayerScreenProps = {
+  film: Film;
+}
+
+function PlayerScreen({film}: PlayerScreenProps) {
+  const {videoLink, posterImage} = film;
+  const navigate = useNavigate();
   return (
     <div className="player">
-      <video src="#" className="player__video" poster="img/player-poster.jpg"></video>
+      <video src={videoLink} className="player__video" poster={posterImage}></video>
 
-      <button type="button" className="player__exit">Exit</button>
+      <button onClick={() => {navigate(-1);}} type="button" className="player__exit">Exit</button>
 
       <div className="player__controls">
         <div className="player__controls-row">
