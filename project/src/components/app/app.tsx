@@ -8,14 +8,16 @@ import PlayerScreen from '../../pages/player/player-screen/player-screen';
 import MainPageScreen from '../../pages/main-page-screen/main-page-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
+import { Films, Film } from '../../types/films';
+import { promoFilm } from '../../mocks/promo-film';
 
 type AppScreenProps = {
-  movieTitle: string;
-  movieGenre: string;
-  startDate: string;
+  films: Films;
 }
 
-function App({movieTitle, movieGenre, startDate}: AppScreenProps): JSX.Element {
+function App({films}: AppScreenProps): JSX.Element {
+  const [firstFilm] = films;
+
   return (
     <BrowserRouter>
       <Routes>
@@ -23,9 +25,8 @@ function App({movieTitle, movieGenre, startDate}: AppScreenProps): JSX.Element {
           path={AppRoute.Main}
           element={
             <MainPageScreen
-              movieTitle={movieTitle}
-              movieGenre={movieGenre}
-              startDate={startDate}
+              films={films}
+              promoFilm={promoFilm}
             />
           }
         />
@@ -36,22 +37,22 @@ function App({movieTitle, movieGenre, startDate}: AppScreenProps): JSX.Element {
         <Route
           path={AppRoute.MyList}
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
-              <MyListScreen/>
+            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+              <MyListScreen films={films}/>
             </PrivateRoute>
           }
         />
         <Route
           path={AppRoute.Film}
-          element={<MoviePageScreen/>}
+          element={<MoviePageScreen film={firstFilm as Film} films={films}/>}
         />
         <Route
           path={AppRoute.ReviewForm}
-          element={<ReviewFormScreen/>}
+          element={<ReviewFormScreen film={firstFilm as Film}/>}
         />
         <Route
           path={AppRoute.Player}
-          element={<PlayerScreen/>}
+          element={<PlayerScreen film={firstFilm as Film}/>}
         />
         <Route
           path='*'
