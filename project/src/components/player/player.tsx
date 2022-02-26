@@ -39,7 +39,7 @@ function Player({src, posterImage, isActive, isPreview}: PlayerProps) {
       videoRef.current.load();
     }
 
-  }, [isActive]);
+  }, [isActive, isPreview]);
 
   return (
     <video

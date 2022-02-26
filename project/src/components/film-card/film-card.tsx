@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { PREVIEW_TIMEOUT } from '../../const';
 import { Film } from '../../types/films';
 import Player from '../player/player';
 
@@ -20,7 +21,7 @@ function FilmCard(props: FilmCardProps) {
         () => {
           playTimer = setTimeout(() => {
             onHover(id);
-          }, 1000);
+          }, PREVIEW_TIMEOUT);
         }
       }
       onMouseLeave={
