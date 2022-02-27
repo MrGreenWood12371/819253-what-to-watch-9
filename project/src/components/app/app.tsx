@@ -10,6 +10,11 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
 import { Films, Film } from '../../types/films';
 import { promoFilm } from '../../mocks/promo-film';
+import FilmOverview from '../film-overview/film-overview';
+import FilmDetails from '../film-details/film-details';
+import FilmReviews from '../film-reviews/film-reviews';
+import { Reviews } from '../../types/reviews';
+import { filmReviews } from '../../mocks/film-reviews';
 
 type AppScreenProps = {
   films: Films;
@@ -45,7 +50,11 @@ function App({films}: AppScreenProps): JSX.Element {
         <Route
           path={AppRoute.Film}
           element={<MoviePageScreen film={firstFilm as Film} films={films}/>}
-        />
+        >
+          <Route index element={<FilmOverview film={firstFilm as Film}/>}/>
+          <Route path='details' element={<FilmDetails film={firstFilm as Film}/>}/>
+          <Route path='reviews' element={<FilmReviews filmReviews={filmReviews as Reviews}/>}/>
+        </Route>
         <Route
           path={AppRoute.ReviewForm}
           element={<ReviewFormScreen film={firstFilm as Film}/>}
