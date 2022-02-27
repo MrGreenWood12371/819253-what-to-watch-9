@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import FilmCards from '../../../components/film-cards/film-cards';
 import Logo from '../../../components/logo/logo';
+import Tabs from '../../../components/tabs/tabs';
 import { AppRoute } from '../../../const';
 import { Film, Films } from '../../../types/films';
 
@@ -12,7 +13,7 @@ type MoviePageScreenProps = {
 
 function MoviePageScreen({film, films}: MoviePageScreenProps) {
 
-  const {id, name, genre, released, rating, scoresCount, director, starring, description, posterImage, backgroundImage} = film;
+  const {id, name, genre, released, posterImage, backgroundImage} = film;
   const navigate = useNavigate();
 
   return (
@@ -75,34 +76,9 @@ function MoviePageScreen({film, films}: MoviePageScreenProps) {
 
             <div className="film-card__desc">
               <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <a href="#" className="film-nav__link">Overview</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">Details</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">Reviews</a>
-                  </li>
-                </ul>
+                <Tabs/>
               </nav>
-
-              <div className="film-rating">
-                <div className="film-rating__score">{rating}</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">Very good</span>
-                  <span className="film-rating__count">{scoresCount}</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                {description}
-
-                <p className="film-card__director"><strong>{director}</strong></p>
-
-                <p className="film-card__starring"><strong>Starring: {starring}</strong></p>
-              </div>
+              <Outlet/>
             </div>
           </div>
         </div>
@@ -112,7 +88,7 @@ function MoviePageScreen({film, films}: MoviePageScreenProps) {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmCards films={films}/>
+          <FilmCards films={films.filter((el) => el.id !== id  && el.genre === genre)}/>
         </section>
 
         <footer className="page-footer">

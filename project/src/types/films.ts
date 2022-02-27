@@ -16,6 +16,6 @@ export type Film = {
   isFavorite: boolean;
   videoLink: string;
   previewVideoLink: string;
-}
+};
 
 export type Films = Film[];
