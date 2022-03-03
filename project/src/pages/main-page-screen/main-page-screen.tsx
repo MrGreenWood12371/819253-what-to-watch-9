@@ -1,17 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import FilmCards from '../../components/film-cards/film-cards';
+import Genres from '../../components/genres/genres';
 import Logo from '../../components/logo/logo';
 import { AppRoute } from '../../const';
-import { Film, Films } from '../../types/films';
+import { useAppselector } from '../../hooks';
+import { Film } from '../../types/films';
 
 type MainPageProps = {
-  films: Films;
   promoFilm: Film;
 }
 
-function MainPageScreen({films, promoFilm}: MainPageProps) {
+function MainPageScreen({ promoFilm}: MainPageProps) {
   const {name, genre, released, posterImage, backgroundImage, id} = promoFilm;
   const navigate = useNavigate();
+  const currentFilms = useAppselector((state) => state.films);
+  const currentGenre = useAppselector((state) => state.genre);
 
   return (
     <>
@@ -72,40 +75,9 @@ function MainPageScreen({films, promoFilm}: MainPageProps) {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="#" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
+          <Genres genre={currentGenre}/>
 
-          <FilmCards films={films}/>
+          <FilmCards films={currentFilms} genre={currentGenre}/>
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>

@@ -30,7 +30,6 @@ function App({films}: AppScreenProps): JSX.Element {
           path={AppRoute.Main}
           element={
             <MainPageScreen
-              films={films}
               promoFilm={promoFilm}
             />
           }
