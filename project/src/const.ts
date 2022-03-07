@@ -13,4 +13,9 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
+export enum FilmsOnPage {
+  MaxPerStep = '8',
+  Initial = '8'
+}
+
 export const PREVIEW_TIMEOUT = 1000;

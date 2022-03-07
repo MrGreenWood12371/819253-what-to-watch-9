@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../hooks';
-import { changeGenre } from '../../store/action';
+import { changeGenre, resetMaxFilms } from '../../store/action';
 import { Genre } from '../../types/genres';
 import { genres } from './data/data';
 
@@ -18,6 +18,7 @@ function Genres({genre}: GenresProps) {
           style={{'cursor': 'pointer'}}
           onClick={() => {
             dispatch(changeGenre('All genres'));
+            dispatch(resetMaxFilms());
           }}
         >
           All genres
@@ -34,6 +35,7 @@ function Genres({genre}: GenresProps) {
               style={{'cursor': 'pointer'}}
               onClick={() => {
                 dispatch(changeGenre(el));
+                dispatch(resetMaxFilms());
               }}
             >
               {el}
