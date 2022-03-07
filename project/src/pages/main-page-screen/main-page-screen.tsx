@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import FilmCards from '../../components/film-cards/film-cards';
 import Genres from '../../components/genres/genres';
 import Logo from '../../components/logo/logo';
+import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import { AppRoute } from '../../const';
 import { useAppselector } from '../../hooks';
 import { Film } from '../../types/films';
@@ -13,8 +14,17 @@ type MainPageProps = {
 function MainPageScreen({ promoFilm}: MainPageProps) {
   const {name, genre, released, posterImage, backgroundImage, id} = promoFilm;
   const navigate = useNavigate();
-  const currentFilms = useAppselector((state) => state.films);
+  const initialFilms = useAppselector((state) => state.films);
+  let currentFilms;
   const currentGenre = useAppselector((state) => state.genre);
+  const maxFilmsOnPage = useAppselector((state) => state.maxFilms);
+
+  if (currentGenre !== 'All genres') {
+    currentFilms = initialFilms.filter((el) => el.genre === currentGenre);
+  }
+  else {
+    currentFilms =  initialFilms;
+  }
 
   return (
     <>
@@ -77,11 +87,12 @@ function MainPageScreen({ promoFilm}: MainPageProps) {
 
           <Genres genre={currentGenre}/>
 
-          <FilmCards films={currentFilms} genre={currentGenre}/>
+          <FilmCards films={currentFilms.length > maxFilmsOnPage ?
+            currentFilms.slice(0, maxFilmsOnPage)
+            : currentFilms}
+          />
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          {currentFilms.length > maxFilmsOnPage ? <ShowMoreButton/> : null}
         </section>
 
         <footer className="page-footer">
