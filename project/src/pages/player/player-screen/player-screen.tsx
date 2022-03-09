@@ -1,16 +1,17 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppselector } from '../../../hooks';
 import { Film } from '../../../types/films';
 
-type PlayerScreenProps = {
-  film: Film;
-}
+function PlayerScreen() {
+  const params = useParams();
 
-function PlayerScreen({film}: PlayerScreenProps) {
-  const {videoLink, posterImage} = film;
+  const film = useAppselector((state) => state.films).find((el) => `${el.id}` === params.id);
+
+  const {videoLink, backgroundImage} = film as Film;
   const navigate = useNavigate();
   return (
     <div className="player">
-      <video src={videoLink} className="player__video" poster={posterImage}></video>
+      <video src={videoLink} className="player__video" poster={backgroundImage}></video>
 
       <button onClick={() => {navigate(-1);}} type="button" className="player__exit">Exit</button>
 

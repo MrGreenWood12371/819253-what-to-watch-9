@@ -1,12 +1,14 @@
 import { Fragment } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAppselector } from '../../hooks';
 import { Film } from '../../types/films';
 
-type FilmDetailsProps = {
-  film: Film;
-}
+function FilmDetails() {
+  const params = useParams();
 
-function FilmDetails({film}: FilmDetailsProps) {
-  const {starring, runTime, genre, released, director} = film;
+  const film = useAppselector((state) => state.films).find((el) => `${el.id}` === params.id);
+
+  const {starring, runTime, genre, released, director} = film as Film;
 
   return (
     <div className="film-card__text film-card__row">

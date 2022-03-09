@@ -1,19 +1,23 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import FilmCards from '../../../components/film-cards/film-cards';
 import Logo from '../../../components/logo/logo';
 import Tabs from '../../../components/tabs/tabs';
 import { AppRoute } from '../../../const';
+import { useAppselector } from '../../../hooks';
 import { Film, Films } from '../../../types/films';
 
 type MoviePageScreenProps = {
-  film: Film;
   films: Films;
 }
 
-function MoviePageScreen({film, films}: MoviePageScreenProps) {
+function MoviePageScreen({ films }: MoviePageScreenProps) {
 
-  const {id, name, genre, released, posterImage, backgroundImage} = film;
+  const params = useParams();
+
+  const film = useAppselector((state) => state.films).find((el) => `${el.id}` === params.id);
+
+  const {id, name, genre, released, posterImage, backgroundImage} = film as Film;
   const navigate = useNavigate();
 
   return (

@@ -8,20 +8,27 @@ import PlayerScreen from '../../pages/player/player-screen/player-screen';
 import MainPageScreen from '../../pages/main-page-screen/main-page-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
-import { Films, Film } from '../../types/films';
-import { promoFilm } from '../../mocks/promo-film';
 import FilmOverview from '../film-overview/film-overview';
 import FilmDetails from '../film-details/film-details';
 import FilmReviews from '../film-reviews/film-reviews';
 import { Reviews } from '../../types/reviews';
 import { filmReviews } from '../../mocks/film-reviews';
+import { useAppselector } from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import { Film } from '../../types/films';
 
-type AppScreenProps = {
-  films: Films;
-}
 
-function App({films}: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
+  const  films = useAppselector((state) => state.films);
   const [firstFilm] = films;
+
+  const {isDataLoaded} = useAppselector((state) => state);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen/>
+    );
+  }
 
   return (
     <BrowserRouter>
@@ -29,9 +36,7 @@ function App({films}: AppScreenProps): JSX.Element {
         <Route
           path={AppRoute.Main}
           element={
-            <MainPageScreen
-              promoFilm={promoFilm}
-            />
+            <MainPageScreen/>
           }
         />
         <Route
@@ -48,10 +53,10 @@ function App({films}: AppScreenProps): JSX.Element {
         />
         <Route
           path={AppRoute.Film}
-          element={<MoviePageScreen film={firstFilm as Film} films={films}/>}
+          element={<MoviePageScreen films={films}/>}
         >
-          <Route index element={<FilmOverview film={firstFilm as Film}/>}/>
-          <Route path='details' element={<FilmDetails film={firstFilm as Film}/>}/>
+          <Route index element={<FilmOverview/>}/>
+          <Route path='details' element={<FilmDetails/>}/>
           <Route path='reviews' element={<FilmReviews filmReviews={filmReviews as Reviews}/>}/>
         </Route>
         <Route
@@ -60,7 +65,7 @@ function App({films}: AppScreenProps): JSX.Element {
         />
         <Route
           path={AppRoute.Player}
-          element={<PlayerScreen film={firstFilm as Film}/>}
+          element={<PlayerScreen/>}
         />
         <Route
           path='*'

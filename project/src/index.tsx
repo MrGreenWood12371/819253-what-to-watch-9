@@ -2,15 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './components/app/app';
-import { films } from './mocks/films';
+import ErrorMessage from './components/error-message/error-message';
 import { store } from './store';
+import { fetchFilmsAction, fetchPromoFilmAction } from './store/api-actions';
+
+store.dispatch(fetchFilmsAction());
+store.dispatch(fetchPromoFilmAction());
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App
-        films={films}
-      />
+      <ErrorMessage/>
+      <App/>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'));
