@@ -1,11 +1,13 @@
+import { useParams } from 'react-router-dom';
+import { useAppselector } from '../../hooks';
 import { Film } from '../../types/films';
 
-type FilmOverviewProps = {
-  film: Film
-}
+function FilmOverview() {
+  const params = useParams();
 
-function FilmOverview({film}: FilmOverviewProps) {
-  const {rating, scoresCount, director, starring, description} = film;
+  const film = useAppselector((state) => state.films).find((el) => `${el.id}` === params.id);
+
+  const {rating, scoresCount, director, starring, description} = film as Film;
 
   return (
     <>

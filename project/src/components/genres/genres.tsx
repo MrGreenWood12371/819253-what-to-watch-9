@@ -1,7 +1,6 @@
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppselector } from '../../hooks';
 import { changeGenre, resetMaxFilms } from '../../store/action';
 import { Genre } from '../../types/genres';
-import { genres } from './data/data';
 
 type GenresProps = {
   genre: Genre;
@@ -9,6 +8,9 @@ type GenresProps = {
 
 function Genres({genre}: GenresProps) {
   const dispatch = useAppDispatch();
+  const films = useAppselector((state) => state.films);
+
+  const genres: string[] = Array.from(new Set(films.map((film) => film.genre)));
 
   return (
     <ul className="catalog__genres-list">

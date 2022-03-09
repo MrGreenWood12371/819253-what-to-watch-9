@@ -7,12 +7,9 @@ import { AppRoute } from '../../const';
 import { useAppselector } from '../../hooks';
 import { Film } from '../../types/films';
 
-type MainPageProps = {
-  promoFilm: Film;
-}
-
-function MainPageScreen({ promoFilm}: MainPageProps) {
-  const {name, genre, released, posterImage, backgroundImage, id} = promoFilm;
+function MainPageScreen() {
+  const  promoFilm = useAppselector((state) => state.promoFilm);
+  const {name, genre, released, posterImage, backgroundImage, id} = promoFilm as Film;
   const navigate = useNavigate();
   const initialFilms = useAppselector((state) => state.films);
   let currentFilms;
