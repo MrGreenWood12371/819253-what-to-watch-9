@@ -24,6 +24,8 @@ export enum Server {
   Url = 'https://9.react.pages.academy/wtw',
   Films = '/films',
   PromoFilm = '/promo',
+  Login = '/login',
+  Logout = '/logout',
 }
 
 export enum HTTP_CODE {

@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { FilmsOnPage } from '../const';
+import { AuthorizationStatus, FilmsOnPage } from '../const';
 import { Film, Films } from '../types/films';
-import { setFilms, changeGenre, addFilms, resetMaxFilms, setError, setPromoFilm } from './action';
+import { setFilms, changeGenre, addFilms, resetMaxFilms, setError, setPromoFilm, requireAuthorization } from './action';
 
 type InitialState = {
   genre: string,
@@ -11,6 +11,7 @@ type InitialState = {
   maxFilms: number,
   error: string,
   isDataLoaded: boolean,
+  authorizationStatus: AuthorizationStatus,
 };
 
 const initialState: InitialState = {
@@ -21,6 +22,7 @@ const initialState: InitialState = {
   maxFilms: +FilmsOnPage.Initial,
   error: '',
   isDataLoaded: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -41,8 +43,11 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(resetMaxFilms, (state) => {
       state.maxFilms = +FilmsOnPage.Initial;
     })
-    .addCase(setError, (state, action)=> {
+    .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 

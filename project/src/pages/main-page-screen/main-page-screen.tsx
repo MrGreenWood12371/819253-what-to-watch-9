@@ -3,18 +3,18 @@ import FilmCards from '../../components/film-cards/film-cards';
 import Genres from '../../components/genres/genres';
 import Logo from '../../components/logo/logo';
 import ShowMoreButton from '../../components/show-more-button/show-more-button';
-import { AppRoute } from '../../const';
+import UserBlock from '../../components/user-block/user-block';
 import { useAppselector } from '../../hooks';
 import { Film } from '../../types/films';
 
 function MainPageScreen() {
   const  promoFilm = useAppselector((state) => state.promoFilm);
   const {name, genre, released, posterImage, backgroundImage, id} = promoFilm as Film;
-  const navigate = useNavigate();
   const initialFilms = useAppselector((state) => state.films);
   let currentFilms;
   const currentGenre = useAppselector((state) => state.genre);
   const maxFilmsOnPage = useAppselector((state) => state.maxFilms);
+  const navigate = useNavigate();
 
   if (currentGenre !== 'All genres') {
     currentFilms = initialFilms.filter((el) => el.genre === currentGenre);
@@ -35,16 +35,7 @@ function MainPageScreen() {
         <header className="page-header film-card__head">
           <Logo/>
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img onClick={() => navigate(AppRoute.MyList)} src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <UserBlock/>
         </header>
 
         <div className="film-card__wrap">
