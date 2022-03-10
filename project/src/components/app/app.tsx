@@ -22,9 +22,9 @@ function App(): JSX.Element {
   const  films = useAppselector((state) => state.films);
   const [firstFilm] = films;
 
-  const {isDataLoaded} = useAppselector((state) => state);
+  const {isDataLoaded, authorizationStatus} = useAppselector((state) => state);
 
-  if (!isDataLoaded) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || !isDataLoaded) {
     return (
       <LoadingScreen/>
     );
@@ -46,7 +46,7 @@ function App(): JSX.Element {
         <Route
           path={AppRoute.MyList}
           element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+            <PrivateRoute>
               <MyListScreen films={films}/>
             </PrivateRoute>
           }

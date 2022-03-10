@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import FilmCards from '../../../components/film-cards/film-cards';
 import Logo from '../../../components/logo/logo';
 import Tabs from '../../../components/tabs/tabs';
-import { AppRoute } from '../../../const';
+import UserBlock from '../../../components/user-block/user-block';
 import { useAppselector } from '../../../hooks';
 import { Film, Films } from '../../../types/films';
 
@@ -33,16 +33,7 @@ function MoviePageScreen({ films }: MoviePageScreenProps) {
           <header className="page-header film-card__head">
             <Logo/>
 
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img onClick={() => navigate(AppRoute.MyList)} src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
-              </li>
-            </ul>
+            <UserBlock/>
           </header>
 
           <div className="film-card__wrap">
