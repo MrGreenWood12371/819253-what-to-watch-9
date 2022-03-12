@@ -5,6 +5,7 @@ export enum AppRoute  {
   Film = '/films/:id',
   ReviewForm = '/films/:id/review',
   Player = '/player/:id',
+  Error = '*',
 }
 
 export enum AuthorizationStatus {
@@ -24,6 +25,7 @@ export enum Server {
   Url = 'https://9.react.pages.academy/wtw',
   Films = '/films',
   PromoFilm = '/promo',
+  Reviews = '/comments',
   Login = '/login',
   Logout = '/logout',
 }

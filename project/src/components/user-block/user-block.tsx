@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { useAppselector } from '../../hooks';
+import { useAppDispatch, useAppselector } from '../../hooks';
+import { logoutAction } from '../../store/api-actions';
 
 function UserBlock() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const authorizationStatus  =  useAppselector((state) => state.authorizationStatus);
 
   return (
@@ -17,7 +19,16 @@ function UserBlock() {
               </div>
             </li>
             <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
+              <Link
+                to='./'
+                onClick={(evt) => {
+                  evt.preventDefault();
+                  dispatch(logoutAction());
+                }}
+                className="user-block__link"
+              >
+                Sign out
+              </Link>
             </li>
           </>
           :

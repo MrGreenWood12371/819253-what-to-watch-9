@@ -1,24 +1,34 @@
+import { useEffect } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import FilmCards from '../../../components/film-cards/film-cards';
 import Logo from '../../../components/logo/logo';
 import Tabs from '../../../components/tabs/tabs';
 import UserBlock from '../../../components/user-block/user-block';
+import { AuthorizationStatus } from '../../../const';
 import { useAppselector } from '../../../hooks';
-import { Film, Films } from '../../../types/films';
+import { store } from '../../../store';
+import { fetchCurrentFilmAction, fetchFilmReviewsAction, fetchFilmsLikeThisAction } from '../../../store/api-actions';
+import { Film } from '../../../types/films';
 
-type MoviePageScreenProps = {
-  films: Films;
-}
+function MoviePageScreen() {
 
-function MoviePageScreen({ films }: MoviePageScreenProps) {
+  const authorizationStatus = useAppselector((state) => state.authorizationStatus);
 
   const params = useParams();
 
-  const film = useAppselector((state) => state.films).find((el) => `${el.id}` === params.id);
+  useEffect(() => {
+    store.dispatch(fetchCurrentFilmAction(params.id as string));
+    store.dispatch(fetchFilmsLikeThisAction(params.id as string));
+    store.dispatch(fetchFilmReviewsAction(params.id as string));
+  }, [params.id]);
+
+  const film = useAppselector((state) => state.currentFilm);
+  const films = useAppselector((state) => state.filmsLikeThis);
 
   const {id, name, genre, released, posterImage, backgroundImage} = film as Film;
   const navigate = useNavigate();
+
 
   return (
     <>
@@ -57,7 +67,9 @@ function MoviePageScreen({ films }: MoviePageScreenProps) {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to={'./review'} className="btn film-card__button">Add review</Link>
+                {authorizationStatus === AuthorizationStatus.Auth ?
+                  <Link to={'./review'} className="btn film-card__button">Add review</Link>
+                  : null}
               </div>
             </div>
           </div>
@@ -83,7 +95,7 @@ function MoviePageScreen({ films }: MoviePageScreenProps) {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmCards films={films.filter((el) => el.id !== id  && el.genre === genre)}/>
+          <FilmCards films={films.filter((el) => el.name !== name)}/>
         </section>
 
         <footer className="page-footer">

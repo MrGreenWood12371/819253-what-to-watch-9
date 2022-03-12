@@ -1,12 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api, store } from '.';
-import { AuthorizationStatus, Server } from '../const';
+import { AppRoute, AuthorizationStatus, Server } from '../const';
 import { errorHandle } from '../services/error-handle';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
 import { Film, Films } from '../types/films';
+import { Reviews } from '../types/reviews';
 import { UserData } from '../types/user-data';
-import { requireAuthorization, setError, setFilms, setPromoFilm } from './action';
+import { UserReview } from '../types/user-review';
+import { loadCurrentFilm, loadFilmReviews, loadFilmsLikeThis, redirectToRoute, requireAuthorization, sendReview, setError, setFilms, setPromoFilm } from './action';
 
 export const clearErrorAction = createAsyncThunk(
   'data/clearError',
@@ -34,9 +36,62 @@ export const fetchPromoFilmAction = createAsyncThunk(
   'data/fetchPromoFilm',
   async () => {
     try {
-      const  {data} = await api.get<Film>(Server.PromoFilm);
+      const {data} = await api.get<Film>(Server.PromoFilm);
       store.dispatch(setPromoFilm(data));
     } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchCurrentFilmAction = createAsyncThunk(
+  'data/fetchCurrentFilm',
+  async (filmId: string) => {
+    try {
+      const {data} = await api.get<Film>(`${Server.Films}/${filmId}`);
+      store.dispatch(loadCurrentFilm(data));
+    } catch (error) {
+      errorHandle(error);
+      store.dispatch(redirectToRoute(AppRoute.Error));
+    }
+  },
+);
+
+export const fetchFilmsLikeThisAction = createAsyncThunk(
+  'data/fetchFilmsLikeThis',
+  async (filmId: string) => {
+    try {
+      const {data} = await api.get<Films>(`${Server.Films}/${filmId}/similar`);
+      store.dispatch(loadFilmsLikeThis(data));
+    } catch (error) {
+      errorHandle(error);
+      store.dispatch(redirectToRoute(AppRoute.Error));
+    }
+  },
+);
+
+export const fetchFilmReviewsAction = createAsyncThunk(
+  'data/fetchFilmReviews',
+  async (filmId: string) => {
+    try {
+      const {data} = await api.get<Reviews>(`${Server.Reviews}/${filmId}`);
+      store.dispatch(loadFilmReviews(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchReviewAction = createAsyncThunk(
+  'data/fetchReview',
+  async ({rating, comment, filmId}: UserReview) => {
+    try {
+      await api.post<UserReview>(`${Server.Reviews}/${filmId}`, {rating, comment});
+      store.dispatch(sendReview(false));
+      store.dispatch(redirectToRoute(`films/${filmId}`));
+    }
+    catch(error) {
+      store.dispatch(sendReview(false));
       errorHandle(error);
     }
   },
@@ -63,6 +118,7 @@ export const loginAction = createAsyncThunk(
       const {data: {token}} = await api.post<UserData>(Server.Login, {email, password});
       saveToken(token);
       store.dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      store.dispatch(redirectToRoute(AppRoute.Main));
     }
     catch(error) {
       errorHandle(error);

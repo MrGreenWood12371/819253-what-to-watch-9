@@ -1,27 +1,36 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { AuthorizationStatus, FilmsOnPage } from '../const';
 import { Film, Films } from '../types/films';
-import { setFilms, changeGenre, addFilms, resetMaxFilms, setError, setPromoFilm, requireAuthorization } from './action';
+import { Reviews } from '../types/reviews';
+import { setFilms, changeGenre, addFilms, resetMaxFilms, setError, setPromoFilm, requireAuthorization, loadCurrentFilm, loadFilmsLikeThis, loadFilmReviews, sendReview } from './action';
 
 type InitialState = {
   genre: string,
   films: Films,
+  filmsLikeThis: Films,
+  filmReviews: Reviews,
   favoriteFilms: Films,
   promoFilm: Film | object,
+  currentFilm: Film | object,
   maxFilms: number,
   error: string,
   isDataLoaded: boolean,
+  isReviewSending: boolean,
   authorizationStatus: AuthorizationStatus,
 };
 
 const initialState: InitialState = {
   genre: 'All genres',
   films: [],
+  filmsLikeThis: [],
+  filmReviews: [],
   favoriteFilms: [],
   promoFilm: {},
+  currentFilm: {},
   maxFilms: +FilmsOnPage.Initial,
   error: '',
   isDataLoaded: false,
+  isReviewSending: false,
   authorizationStatus: AuthorizationStatus.Unknown,
 };
 
@@ -37,6 +46,15 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setPromoFilm,  (state, action) => {
       state.promoFilm = action.payload;
     })
+    .addCase(loadCurrentFilm, (state, action) => {
+      state.currentFilm = action.payload;
+    })
+    .addCase(loadFilmsLikeThis, (state, action) => {
+      state.filmsLikeThis = action.payload;
+    })
+    .addCase(loadFilmReviews, (state, action) => {
+      state.filmReviews = action.payload;
+    })
     .addCase(addFilms, (state) => {
       state.maxFilms += +FilmsOnPage.MaxPerStep;
     })
@@ -48,6 +66,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(sendReview, (state, action) => {
+      state.isReviewSending = action.payload;
     });
 });
 
