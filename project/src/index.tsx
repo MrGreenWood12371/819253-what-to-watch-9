@@ -6,9 +6,9 @@ import ErrorMessage from './components/error-message/error-message';
 import { store } from './store';
 import { checkAuthAction, fetchFilmsAction, fetchPromoFilmAction } from './store/api-actions';
 
+store.dispatch(checkAuthAction());
 store.dispatch(fetchFilmsAction());
 store.dispatch(fetchPromoFilmAction());
-store.dispatch(checkAuthAction());
 
 ReactDOM.render(
   <React.StrictMode>

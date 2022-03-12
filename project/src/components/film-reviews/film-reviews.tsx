@@ -1,16 +1,15 @@
-import { Reviews } from '../../types/reviews';
+import { useAppselector } from '../../hooks';
 
-type FilmReviewsProps = {
-  filmReviews: Reviews;
-}
+function FilmReviews() {
 
-function FilmReviews({filmReviews}: FilmReviewsProps) {
+  const filmReviews = useAppselector((state) => state.filmReviews);
+
   return (
     <div className='film-card__reviews film-card__row'>
       <div className="film-card__reviews-col">
         {
           filmReviews.map((el, id) => {
-            if (id % 2 === 0) {
+            if (id % 2 === 1) {
               return null;
             }
 
@@ -35,7 +34,7 @@ function FilmReviews({filmReviews}: FilmReviewsProps) {
       <div className="film-card__reviews-col">
         {
           filmReviews.map((el, id) => {
-            if (id % 2 === 1) {
+            if (id % 2 === 0) {
               return null;
             }
 

@@ -44,7 +44,8 @@ function FilmCard(props: FilmCardProps) {
         <Link
           className="small-film-card__link"
           to={`/films/${id}`}
-        >{name}
+        >
+          {name}
         </Link>
       </h3>
     </article>

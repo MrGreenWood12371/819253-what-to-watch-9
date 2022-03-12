@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import SignInScreen from '../../pages/sign-in/sign-in-screen/sign-in-screen';
 import MyListScreen from '../../pages/my-list-screen/my-list-screen';
@@ -11,16 +11,14 @@ import PrivateRoute from '../private-route/private-route';
 import FilmOverview from '../film-overview/film-overview';
 import FilmDetails from '../film-details/film-details';
 import FilmReviews from '../film-reviews/film-reviews';
-import { Reviews } from '../../types/reviews';
-import { filmReviews } from '../../mocks/film-reviews';
 import { useAppselector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
-import { Film } from '../../types/films';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 
 
 function App(): JSX.Element {
   const  films = useAppselector((state) => state.films);
-  const [firstFilm] = films;
 
   const {isDataLoaded, authorizationStatus} = useAppselector((state) => state);
 
@@ -31,7 +29,7 @@ function App(): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={AppRoute.Main}
@@ -53,15 +51,19 @@ function App(): JSX.Element {
         />
         <Route
           path={AppRoute.Film}
-          element={<MoviePageScreen films={films}/>}
+          element={<MoviePageScreen/>}
         >
           <Route index element={<FilmOverview/>}/>
           <Route path='details' element={<FilmDetails/>}/>
-          <Route path='reviews' element={<FilmReviews filmReviews={filmReviews as Reviews}/>}/>
+          <Route path='reviews' element={<FilmReviews/>}/>
         </Route>
         <Route
           path={AppRoute.ReviewForm}
-          element={<ReviewFormScreen film={firstFilm as Film}/>}
+          element={
+            <PrivateRoute>
+              <ReviewFormScreen/>
+            </PrivateRoute>
+          }
         />
         <Route
           path={AppRoute.Player}
@@ -72,7 +74,7 @@ function App(): JSX.Element {
           element={<NotFoundScreen/>}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 
