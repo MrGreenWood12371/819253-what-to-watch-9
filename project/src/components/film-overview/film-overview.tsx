@@ -3,7 +3,7 @@ import { Film } from '../../types/films';
 
 function FilmOverview() {
 
-  const film = useAppselector((state) => state.currentFilm);
+  const {currentFilm: film} = useAppselector(({DATA}) => DATA);
 
   const {rating, scoresCount, director, starring, description} = film as Film;
 

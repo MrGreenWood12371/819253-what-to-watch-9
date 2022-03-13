@@ -6,7 +6,7 @@ import { logoutAction } from '../../store/api-actions';
 function UserBlock() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const authorizationStatus  =  useAppselector((state) => state.authorizationStatus);
+  const {authorizationStatus}  =  useAppselector(({USER}) => USER);
 
   return (
     <ul className="user-block">

@@ -8,9 +8,6 @@ import PlayerScreen from '../../pages/player/player-screen/player-screen';
 import MainPageScreen from '../../pages/main-page-screen/main-page-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
-import FilmOverview from '../film-overview/film-overview';
-import FilmDetails from '../film-details/film-details';
-import FilmReviews from '../film-reviews/film-reviews';
 import { useAppselector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
@@ -18,9 +15,10 @@ import browserHistory from '../../browser-history';
 
 
 function App(): JSX.Element {
-  const  films = useAppselector((state) => state.films);
+  const  {films} = useAppselector(({DATA}) => DATA);
+  const {authorizationStatus} = useAppselector(({USER}) => USER);
 
-  const {isDataLoaded, authorizationStatus} = useAppselector((state) => state);
+  const {isDataLoaded} = useAppselector(({DATA}) => DATA);
 
   if (authorizationStatus === AuthorizationStatus.Unknown || !isDataLoaded) {
     return (
@@ -53,9 +51,6 @@ function App(): JSX.Element {
           path={AppRoute.Film}
           element={<MoviePageScreen/>}
         >
-          <Route index element={<FilmOverview/>}/>
-          <Route path='details' element={<FilmDetails/>}/>
-          <Route path='reviews' element={<FilmReviews/>}/>
         </Route>
         <Route
           path={AppRoute.ReviewForm}

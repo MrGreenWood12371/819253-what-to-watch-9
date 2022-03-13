@@ -8,24 +8,16 @@ import { Film, Films } from '../types/films';
 import { Reviews } from '../types/reviews';
 import { UserData } from '../types/user-data';
 import { UserReview } from '../types/user-review';
-import { loadCurrentFilm, loadFilmReviews, loadFilmsLikeThis, redirectToRoute, requireAuthorization, sendReview, setError, setFilms, setPromoFilm } from './action';
-
-export const clearErrorAction = createAsyncThunk(
-  'data/clearError',
-  () => {
-    setTimeout(
-      () => store.dispatch(setError('')),
-      +Server.ErrorTimeout,
-    );
-  },
-);
+import { redirectToRoute } from './action';
+import { loadCurrentFilm, loadFilmReviews, loadFilms, loadFilmsLikeThis, loadPromoFilm, sendReview } from './film-data/film-data';
+import { requireAuthorization } from './user-process/user-process';
 
 export const fetchFilmsAction = createAsyncThunk(
   'data/fetchFilms',
   async () => {
     try {
       const  {data} = await api.get<Films>(Server.Films);
-      store.dispatch(setFilms(data));
+      store.dispatch(loadFilms(data));
     } catch (error) {
       errorHandle(error);
     }
@@ -37,7 +29,7 @@ export const fetchPromoFilmAction = createAsyncThunk(
   async () => {
     try {
       const {data} = await api.get<Film>(Server.PromoFilm);
-      store.dispatch(setPromoFilm(data));
+      store.dispatch(loadPromoFilm(data));
     } catch (error) {
       errorHandle(error);
     }

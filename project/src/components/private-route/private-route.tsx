@@ -8,7 +8,7 @@ type PrivateRouteProps = RouteProps & {
 
 function PrivateRoute(props: PrivateRouteProps) {
   const { children } = props;
-  const {authorizationStatus} = useAppselector((state) => state);
+  const {authorizationStatus} = useAppselector(({USER}) => USER);
 
   return (
     authorizationStatus === AuthorizationStatus.Auth

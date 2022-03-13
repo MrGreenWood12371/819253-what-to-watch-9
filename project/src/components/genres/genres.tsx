@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppselector } from '../../hooks';
-import { changeGenre, resetMaxFilms } from '../../store/action';
+import { changeGenre, resetMaxFilms } from '../../store/film-process/film-process';
 import { Genre } from '../../types/genres';
 
 type GenresProps = {
@@ -8,7 +8,7 @@ type GenresProps = {
 
 function Genres({genre}: GenresProps) {
   const dispatch = useAppDispatch();
-  const films = useAppselector((state) => state.films);
+  const {films} = useAppselector(({DATA}) => DATA);
 
   const genres: string[] = Array.from(new Set(films.map((film) => film.genre)));
 
