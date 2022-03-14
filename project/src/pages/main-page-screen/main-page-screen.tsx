@@ -1,27 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import FilmCards from '../../components/film-cards/film-cards';
-import Genres from '../../components/genres/genres';
 import Logo from '../../components/logo/logo';
-import ShowMoreButton from '../../components/show-more-button/show-more-button';
+import MainCatalog from '../../components/main-catalog/main-catalog';
 import UserBlock from '../../components/user-block/user-block';
 import { useAppselector } from '../../hooks';
 import { Film } from '../../types/films';
 
 function MainPageScreen() {
-  const  promoFilm = useAppselector((state) => state.promoFilm);
+  const  {promoFilm} = useAppselector(({DATA}) => DATA);
   const {name, genre, released, posterImage, backgroundImage, id} = promoFilm as Film;
-  const initialFilms = useAppselector((state) => state.films);
-  let currentFilms;
-  const currentGenre = useAppselector((state) => state.genre);
-  const maxFilmsOnPage = useAppselector((state) => state.maxFilms);
   const navigate = useNavigate();
 
-  if (currentGenre !== 'All genres') {
-    currentFilms = initialFilms.filter((el) => el.genre === currentGenre);
-  }
-  else {
-    currentFilms =  initialFilms;
-  }
 
   return (
     <>
@@ -70,18 +58,7 @@ function MainPageScreen() {
         </div>
       </section>
       <div className="page-content">
-        <section className="catalog">
-          <h2 className="catalog__title visually-hidden">Catalog</h2>
-
-          <Genres genre={currentGenre}/>
-
-          <FilmCards films={currentFilms.length > maxFilmsOnPage ?
-            currentFilms.slice(0, maxFilmsOnPage)
-            : currentFilms}
-          />
-
-          {currentFilms.length > maxFilmsOnPage ? <ShowMoreButton/> : null}
-        </section>
+        <MainCatalog/>
 
         <footer className="page-footer">
           <div className="logo">

@@ -5,7 +5,7 @@ import { useAppselector } from '../../hooks';
 import { Film } from '../../types/films';
 
 function ReviewFormScreen() {
-  const film = useAppselector((state) => state.currentFilm);
+  const {currentFilm: film} = useAppselector(({DATA}) => DATA);
 
   const {name, posterImage, backgroundImage} = film as Film;
 

@@ -6,7 +6,9 @@ import { Film } from '../../types/films';
 function FilmDetails() {
   const params = useParams();
 
-  const film = useAppselector((state) => state.films).find((el) => `${el.id}` === params.id);
+  const {films} = useAppselector(({DATA}) => DATA);
+
+  const film = films.find((el) => `${el.id}` === params.id);
 
   const {starring, runTime, genre, released, director} = film as Film;
 

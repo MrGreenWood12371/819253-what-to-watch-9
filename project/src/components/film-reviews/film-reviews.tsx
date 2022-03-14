@@ -2,7 +2,7 @@ import { useAppselector } from '../../hooks';
 
 function FilmReviews() {
 
-  const filmReviews = useAppselector((state) => state.filmReviews);
+  const {filmReviews} = useAppselector(({DATA}) => DATA);
 
   return (
     <div className='film-card__reviews film-card__row'>

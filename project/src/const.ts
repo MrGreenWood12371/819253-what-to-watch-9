@@ -21,7 +21,6 @@ export enum FilmsOnPage {
 
 export enum Server {
   Timeout = '5000',
-  ErrorTimeout = '2000',
   Url = 'https://9.react.pages.academy/wtw',
   Films = '/films',
   PromoFilm = '/promo',
@@ -34,6 +33,12 @@ export enum HTTP_CODE {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   NOT_FOUND = 404,
+}
+
+export enum NameSpace {
+  film = 'FILM',
+  data = 'DATA',
+  user = 'USER',
 }
 
 export const PREVIEW_TIMEOUT = 1000;

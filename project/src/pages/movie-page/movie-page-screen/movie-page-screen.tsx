@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import FilmCards from '../../../components/film-cards/film-cards';
 import Logo from '../../../components/logo/logo';
@@ -13,7 +13,7 @@ import { Film } from '../../../types/films';
 
 function MoviePageScreen() {
 
-  const authorizationStatus = useAppselector((state) => state.authorizationStatus);
+  const {authorizationStatus} = useAppselector(({USER}) => USER);
 
   const params = useParams();
 
@@ -23,8 +23,7 @@ function MoviePageScreen() {
     store.dispatch(fetchFilmReviewsAction(params.id as string));
   }, [params.id]);
 
-  const film = useAppselector((state) => state.currentFilm);
-  const films = useAppselector((state) => state.filmsLikeThis);
+  const {currentFilm: film, filmsLikeThis: films} = useAppselector(({DATA}) => DATA);
 
   const {id, name, genre, released, posterImage, backgroundImage} = film as Film;
   const navigate = useNavigate();
@@ -82,10 +81,7 @@ function MoviePageScreen() {
             </div>
 
             <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <Tabs/>
-              </nav>
-              <Outlet/>
+              <Tabs/>
             </div>
           </div>
         </div>

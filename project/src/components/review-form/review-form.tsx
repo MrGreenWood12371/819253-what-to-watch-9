@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppselector } from '../../hooks';
-import { sendReview } from '../../store/action';
+import { sendReview } from '../../store/film-data/film-data';
 import { fetchReviewAction } from '../../store/api-actions';
 import { ratingStars } from './data/data';
 
@@ -11,7 +11,7 @@ function ReviewForm() {
 
   const param = useParams();
   const dispatch = useAppDispatch();
-  const isReviewSending = useAppselector((state) => state.isReviewSending);
+  const {isReviewSending} = useAppselector(({DATA}) => DATA);
 
   return (
     <form
