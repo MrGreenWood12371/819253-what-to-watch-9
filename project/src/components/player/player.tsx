@@ -30,12 +30,20 @@ function Player({src, posterImage, isActive, isPreview}: PlayerProps) {
       return;
     }
 
-    if (isActive) {
+    if (isActive && isPreview) {
       videoRef.current.muted = isPreview;
       videoRef.current.play();
     }
 
-    if (!isActive) {
+    if(isActive && !isPreview) {
+      videoRef.current.play();
+    }
+
+    if(!isActive && !isPreview) {
+      videoRef.current.pause();
+    }
+
+    if (!isActive && isPreview) {
       videoRef.current.load();
     }
 

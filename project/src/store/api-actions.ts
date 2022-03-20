@@ -4,19 +4,20 @@ import { AppRoute, AuthorizationStatus, Server } from '../const';
 import { errorHandle } from '../services/error-handle';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
+import { FilmStatus } from '../types/film-status';
 import { Film, Films } from '../types/films';
 import { Reviews } from '../types/reviews';
 import { UserData } from '../types/user-data';
 import { UserReview } from '../types/user-review';
 import { redirectToRoute } from './action';
-import { loadCurrentFilm, loadFilmReviews, loadFilms, loadFilmsLikeThis, loadPromoFilm, sendReview } from './film-data/film-data';
+import { loadCurrentFilm, loadFilmReviews, loadFilms, loadFilmsLikeThis, loadPromoFilm, sendReview, setFavoriteFilms } from './film-data/film-data';
 import { requireAuthorization } from './user-process/user-process';
 
 export const fetchFilmsAction = createAsyncThunk(
   'data/fetchFilms',
   async () => {
     try {
-      const  {data} = await api.get<Films>(Server.Films);
+      const {data} = await api.get<Films>(Server.Films);
       store.dispatch(loadFilms(data));
     } catch (error) {
       errorHandle(error);
@@ -45,6 +46,35 @@ export const fetchCurrentFilmAction = createAsyncThunk(
     } catch (error) {
       errorHandle(error);
       store.dispatch(redirectToRoute(AppRoute.Error));
+    }
+  },
+);
+
+export const setFilmFavoriteAction = createAsyncThunk(
+  'data/setFilmFavorite',
+  async ({filmId, status, isPromo}: FilmStatus) => {
+    try {
+      await api.post<number>(`${Server.Favorite}/${filmId}/${status}`);
+      if (!isPromo) {
+        store.dispatch(fetchCurrentFilmAction(filmId));
+      } else {
+        store.dispatch(fetchPromoFilmAction());
+      }
+    } catch (error) {
+      errorHandle(error);
+      store.dispatch(redirectToRoute(AppRoute.Error));
+    }
+  },
+);
+
+export const fetchFavoriteFilmsAction = createAsyncThunk(
+  'data/fetchFavoriteFilms',
+  async () => {
+    try {
+      const {data} = await api.get<Films>(Server.Favorite);
+      store.dispatch(setFavoriteFilms(data));
+    } catch (error) {
+      errorHandle(errorHandle);
     }
   },
 );

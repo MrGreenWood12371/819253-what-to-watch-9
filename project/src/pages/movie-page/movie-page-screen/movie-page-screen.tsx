@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import FilmCards from '../../../components/film-cards/film-cards';
 import Logo from '../../../components/logo/logo';
+import MyListButton from '../../../components/my-list-button/my-list-button';
 import Tabs from '../../../components/tabs/tabs';
 import UserBlock from '../../../components/user-block/user-block';
 import { AuthorizationStatus } from '../../../const';
@@ -18,14 +19,16 @@ function MoviePageScreen() {
   const params = useParams();
 
   useEffect(() => {
-    store.dispatch(fetchCurrentFilmAction(params.id as string));
-    store.dispatch(fetchFilmsLikeThisAction(params.id as string));
-    store.dispatch(fetchFilmReviewsAction(params.id as string));
+    if (params.id) {
+      store.dispatch(fetchCurrentFilmAction(params.id as string));
+      store.dispatch(fetchFilmsLikeThisAction(params.id as string));
+      store.dispatch(fetchFilmReviewsAction(params.id as string));
+    }
   }, [params.id]);
 
   const {currentFilm: film, filmsLikeThis: films} = useAppselector(({DATA}) => DATA);
 
-  const {id, name, genre, released, posterImage, backgroundImage} = film as Film;
+  const {id, name, genre, released, posterImage, backgroundImage, isFavorite} = film as Film;
   const navigate = useNavigate();
 
 
@@ -60,12 +63,7 @@ function MoviePageScreen() {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
+                <MyListButton filmId={`${id}`} isFavorite={isFavorite} isPromo={false}/>
                 {authorizationStatus === AuthorizationStatus.Auth ?
                   <Link to={'./review'} className="btn film-card__button">Add review</Link>
                   : null}

@@ -15,7 +15,6 @@ import browserHistory from '../../browser-history';
 
 
 function App(): JSX.Element {
-  const  {films} = useAppselector(({DATA}) => DATA);
   const {authorizationStatus} = useAppselector(({USER}) => USER);
 
   const {isDataLoaded} = useAppselector(({DATA}) => DATA);
@@ -43,7 +42,7 @@ function App(): JSX.Element {
           path={AppRoute.MyList}
           element={
             <PrivateRoute>
-              <MyListScreen films={films}/>
+              <MyListScreen/>
             </PrivateRoute>
           }
         />

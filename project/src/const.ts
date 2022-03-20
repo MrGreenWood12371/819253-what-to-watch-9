@@ -25,6 +25,7 @@ export enum Server {
   Films = '/films',
   PromoFilm = '/promo',
   Reviews = '/comments',
+  Favorite = '/favorite',
   Login = '/login',
   Logout = '/logout',
 }

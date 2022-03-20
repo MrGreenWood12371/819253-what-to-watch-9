@@ -1,8 +1,13 @@
 import { useAppselector } from '../../hooks';
+import dayjs from 'dayjs';
 
 function FilmReviews() {
 
   const {filmReviews} = useAppselector(({DATA}) => DATA);
+
+  function formatDate (value: string) {
+    return dayjs(value).format('MMMM DD, YYYY');
+  }
 
   return (
     <div className='film-card__reviews film-card__row'>
@@ -20,7 +25,7 @@ function FilmReviews() {
 
                   <footer className="review__details">
                     <cite className="review__author">{el.user.name}</cite>
-                    <time className="review__date" dateTime="2016-12-24">{el.date}</time>
+                    <time className="review__date" dateTime={formatDate(el.date)}>{formatDate(el.date)}</time>
                   </footer>
                 </blockquote>
 
@@ -45,7 +50,7 @@ function FilmReviews() {
 
                   <footer className="review__details">
                     <cite className="review__author">{el.user.name}</cite>
-                    <time className="review__date" dateTime="2016-12-24">{el.date}</time>
+                    <time className="review__date" dateTime={formatDate(el.date)}>{formatDate(el.date)}</time>
                   </footer>
                 </blockquote>
 

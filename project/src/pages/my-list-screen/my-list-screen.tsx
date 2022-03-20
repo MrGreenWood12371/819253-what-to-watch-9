@@ -1,15 +1,18 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import FilmCards from '../../components/film-cards/film-cards';
 import Logo from '../../components/logo/logo';
-import { AppRoute } from '../../const';
-import { Films } from '../../types/films';
+import UserBlock from '../../components/user-block/user-block';
+import { useAppselector } from '../../hooks';
+import { store } from '../../store';
+import { fetchFavoriteFilmsAction } from '../../store/api-actions';
 
-type MyListScreenProps = {
-  films: Films;
-}
+function MyListScreen() {
 
-function MyListScreen({films}: MyListScreenProps) {
-  const navigate = useNavigate();
+  useEffect(() => {
+    store.dispatch(fetchFavoriteFilmsAction());
+  }, []);
+
+  const {favoriteFilms: films} = useAppselector(({DATA}) => DATA);
 
   return (
     <div className="user-page">
@@ -18,16 +21,7 @@ function MyListScreen({films}: MyListScreenProps) {
 
         <h1 className="page-title user-page__title">My list</h1>
 
-        <ul className="user-block">
-          <li className="user-block__item">
-            <div className="user-block__avatar">
-              <img onClick={() => navigate(AppRoute.MyList)} src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-            </div>
-          </li>
-          <li className="user-block__item">
-            <a className="user-block__link">Sign out</a>
-          </li>
-        </ul>
+        <UserBlock/>
       </header>
 
       <section className="catalog">
