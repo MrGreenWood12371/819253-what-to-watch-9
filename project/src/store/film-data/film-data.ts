@@ -36,6 +36,13 @@ export const filmData = createSlice({
     sendReview: (state, action) => {
       state.isReviewSending = action.payload;
     },
+    setFavoriteFilms: (state, action) => {
+      state.favoriteFilms = action.payload;
+    },
+    setFilmStatus: (state, action) => {
+      // state.films[action.payload].isFavorite = !state.films[action.payload].isFavorite;
+      // state.currentFilm.isFavorite = action.payload;
+    },
   },
 });
 
@@ -46,4 +53,6 @@ export const {
   loadFilmReviews,
   loadPromoFilm,
   sendReview,
+  setFavoriteFilms,
+  setFilmStatus,
 } = filmData.actions;
