@@ -4,6 +4,7 @@ import { useAppDispatch, useAppselector } from '../../hooks';
 import { sendReview } from '../../store/film-data/film-data';
 import { fetchReviewAction } from '../../store/api-actions';
 import { ratingStars } from './data/data';
+import { REVIEW_SETTINGS } from '../../const';
 
 function ReviewForm() {
   const [rating, setRating] = useState(0);
@@ -66,7 +67,7 @@ function ReviewForm() {
           <button
             className="add-review__btn"
             type="submit"
-            disabled={review.length < 50 || review.length > 400 || !rating || isReviewSending}
+            disabled={review.length < REVIEW_SETTINGS.MIN_LENGTH || review.length > REVIEW_SETTINGS.MAX_LENGTH || !rating || isReviewSending}
           >
             Post
           </button>

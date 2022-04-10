@@ -10,7 +10,7 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
 import { useAppselector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
-import HistoryRouter from '../history-route/history-route';
+import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
 
 

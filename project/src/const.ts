@@ -43,3 +43,8 @@ export enum NameSpace {
 }
 
 export const PREVIEW_TIMEOUT = 1000;
+
+export enum REVIEW_SETTINGS {
+  MIN_LENGTH = 50,
+  MAX_LENGTH = 400,
+}
